@@ -12,6 +12,7 @@ def main():
     # years
     movies_dict = {}
     years = []
+    movies_list=[]
     for year in range(2000, 2021):
         years.append(str(year))
         curr_url = url + str(year)
@@ -21,8 +22,11 @@ def main():
         movies_dict[year] = []
         for movie in movies:
             link = movie.get('href')
+            if "\n" in movie.text:
+                movies_list.append(movie.text.strip())
             if "/m/" in link:
                 movies_dict[year].append("rottentomatoes.com" + link)
+    movies_list=[x for x in movies_list if x != "View All"]
 
     with open('movies.csv', mode='w') as csv_file:
         writer = csv.DictWriter(csv_file, fieldnames=['Year', 'Movie Link'])
